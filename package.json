@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start":"node server.js"
+  },
   "dependencies": {
     "aws-sdk": "^2.1290.0",
     "axios": "^0.27.2",
