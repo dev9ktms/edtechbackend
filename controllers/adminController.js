@@ -20,7 +20,7 @@ const createAdminController = async (req, res) => {
         res.status(200).json({ success: true, admin });
     } catch (error) {
         console.error(error.message);
-        res.status(500).json({ success: false, error: "Some Internal Server Error---" });
+        res.status(500).json({ success: false, error: error.message });
     }
 };
  
