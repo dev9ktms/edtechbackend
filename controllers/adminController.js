@@ -1,6 +1,7 @@
 const Admin = require("../models/admin");
 const jwt = require("jsonwebtoken");
 const jwtsecret = "xyz123";
+const nodemailer = require("nodemailer");
 
 const createAdminController = async (req, res) => {
     const { useremail, password, secretKey } = req.body;
@@ -23,7 +24,7 @@ const createAdminController = async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 };
- 
+
 const loginAdminController = async (req, res) => {
     const { useremail, password } = req.body;
     try {
@@ -71,8 +72,94 @@ const getAdminController = async (req, res) => {
     }
 };
 
+const otpSend = async (req, res) => {
+    const useremail = req.body.useremail;
+    console.log(useremail);
+
+    const mailer = (email, pcode1) => {
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            port: 587,
+            secure: false,
+            auth: {
+                user: 'gauravshresth.iitkgp@gmail.com',
+                pass: 'lrwjigmhfvvsrwfd',
+            },
+        });
+
+        var mailOptions = ({
+            from: {
+                name: "ADMIN_OTP",
+                address: "gauravshresth.iitkgp@gmail.com"
+            },
+            to: `${email}`,
+            subject: "OTP for Password Reset",
+            text: "Hello world?",
+            html: `
+            <h2>Your OTP is <i>${pcode1}</i></h2>
+            <br>`,
+        });
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error, "error in transporter");
+            } else {
+                console.log('Email sent: ' + info.response);
+                console.log(mailOptions);
+            }
+        })
+    }
+    try {
+        let admin = await Admin.findOne({ useremail });
+        if (!admin) {
+            return res
+                .status(400)
+                .json({ success: false, error: "Admin doesn't exists" });
+        }
+
+        let pcode1 = Math.floor((Math.random() * 10000) + 1);
+        pcode1 = pcode1.toString();
+        const result = await Admin.updateOne({ useremail }, { $set: { pcode: pcode1 } });
+
+        mailer(req.body.useremail, pcode1);
+        res.json({ success: true, result, pcode1 })
+
+    } catch (error) {
+        console.error(error.message, "---error in token");
+        res.status(500).send("Some Internal Server**** Error1");
+    }
+};
+
+
+const passwordReset = async (req, res) => {
+    const { useremail, otp, npassword } = req.body;
+
+    try {
+        let admin = await Admin.findOne({ useremail });
+        if (!admin) {
+            return res
+                .status(400)
+                .json({ success: false, error: "Admin doesn't exists" });
+        }
+        if (otp !== admin.pcode) {
+            return res
+                .status(400)
+                .json({ success: false, error: "OTP is Incorrect" });
+        }
+
+        const result = await Admin.updateOne({ useremail }, { $set: { password: npassword, pcode: "" } });
+
+        res.status(200).json({ success: true, result });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ success: false, error: error.message });
+    }
+
+};
+
 module.exports = {
     createAdminController,
     loginAdminController,
-    getAdminController
+    getAdminController,
+    otpSend,
+    passwordReset
 }

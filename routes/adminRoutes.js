@@ -7,7 +7,9 @@ const jwtsecret = "xyz123";
 
 const { createAdminController,
   loginAdminController,
-  getAdminController } = require("../controllers/adminController");
+  getAdminController,
+  otpSend,
+  passwordReset } = require("../controllers/adminController");
 
 // Route 1: Method :'POST' , Create Admin
 router.post("/createadmin", createAdminController);
@@ -18,5 +20,11 @@ router.post("/loginadmin", loginAdminController);
 
 // Route 3: Method :'GET' , Get the details of admin.
 router.get("/getadmin", fetchadmin, getAdminController);
+
+// Route 4: Method :'POST' , OTP send to the Admin Email.
+router.post("/otpsend", otpSend);
+
+// Route 5: Method :'POST' , Rest the password for admin.
+router.post("/passwordreset", passwordReset);
 
 module.exports = router;
