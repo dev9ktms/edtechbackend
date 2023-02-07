@@ -54,7 +54,7 @@ const loginAdminController = async (req, res) => {
         res.status(200).json({ success: true, adminToken });
     } catch (error) {
         console.error(error.message, "*******error in token");
-        res.status(500).send("Some Internal Server---- Error");
+        res.status(500).json({ success: false, error: error.message });
     }
 };
 
@@ -67,7 +67,7 @@ const getAdminController = async (req, res) => {
         // console.log(user);
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Some Internal Server Error00000");
+        res.status(500).json({ success: false, error: error.message });
     }
 };
 
