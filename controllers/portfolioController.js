@@ -18,7 +18,7 @@ const S3 = new AWS.S3(awsConfig);
 const createPortfolio = async (req, res) => {
   const { portfolioName, portfolioDescription } = req.body;
   // const useremail = req.email;
-  const username = req.username;
+  const useremail = req.useremail;
   const portfolioSlug = slugify(req.body.portfolioName);
   try {
     const alreadyExist = await Portfolio.findOne({ portfolioSlug });
@@ -28,7 +28,7 @@ const createPortfolio = async (req, res) => {
       portfolioName,
       portfolioDescription,
       portfolioSlug,
-      portfolioCreator: username,
+      portfolioCreator: useremail,
     }).save();
 
     res.status(200).json(portfolio);
@@ -85,7 +85,7 @@ const deletemodule = async (req, res) => {
 // Add a new module
 const addmodule = async (req, res) => {
   const { moduleName, moduleNumber, moduleDescription } = req.body;
-  const username = req.username;
+  const useremail = req.useremail;
 
   try {
     const portfolioSlug = req.params.portfolioSlug;
@@ -93,7 +93,7 @@ const addmodule = async (req, res) => {
     if (!portfolio) {
       return res.status(400).send("Portfolio Not Found");
     }
-    if (username != portfolio.portfolioCreator) {
+    if (useremail != portfolio.portfolioCreator) {
       return res.status(400).send("Unauthorized");
     }
     const count = Object.keys(portfolio.modules).length;
@@ -130,7 +130,7 @@ const addVideo = async (req, res) => {
   const videoTitle = video.name;
   const videoSlug = slugify(videoTitle, "_");
 
-  const username = req.username;
+  const useremail = req.useremail;
   try {
     const portfolioSlug = req.params.portfolioSlug;
     const i = req.params.moduleNumber;
@@ -139,7 +139,7 @@ const addVideo = async (req, res) => {
     if (!portfolio) {
       return res.status(400).send("Portfolio Not Found");
     }
-    if (username != portfolio.portfolioCreator) {
+    if (useremail != portfolio.portfolioCreator) {
       return res.status(400).send("Unauthorized");
     }
 

@@ -1,0 +1,204 @@
+openapi: 3.0.0
+info:
+  title: EdTech
+  version: 1.0.0
+servers:
+  - url: 'http: //localhost:5000'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []
+paths:
+  /users/getuser:
+    get:
+      tags:
+        - General
+      summary: get User
+      parameters:
+        - name: jToken
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiJ9.aXdnLmlpdGtncEBnbWFpbC5jb20.yZXnW-Ikx5-hfP5NOzlOoGlPoOoejfhSFWJT60Hoj4c
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /edcourse/createportfolio:
+    post:
+      tags:
+        - General
+      summary: create Portfolio
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                portfolioName: hhh jkjkh profile
+                portfolioDescription: this is a nnn portfolio
+      parameters:
+        - name: jToken
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiJ9.aXdnLmlpdGtncEBnbWFpbC5jb20.yZXnW-Ikx5-hfP5NOzlOoGlPoOoejfhSFWJT60Hoj4c
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /edcourse/allportfolio:
+    get:
+      tags:
+        - General
+      summary: get all portfolio
+      parameters:
+        - name: jToken
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiJ9.aXdnLmlpdGtncEBnbWFpbC5jb20.yZXnW-Ikx5-hfP5NOzlOoGlPoOoejfhSFWJT60Hoj4c
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /edcourse/addmodule/product-profile:
+    post:
+      tags:
+        - General
+      summary: add Module
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                moduleName: Module 1
+                moduleNumber: 1
+                moduleDescription: this is Module 1 for product-profile
+      parameters:
+        - name: jToken
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiJ9.aXdnLmlpdGtncEBnbWFpbC5jb20.yZXnW-Ikx5-hfP5NOzlOoGlPoOoejfhSFWJT60Hoj4c
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /edcourse/addvideo/product-profile/1:
+    post:
+      tags:
+        - General
+      summary: add Video
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                video:
+                  type: string
+      parameters:
+        - name: jToken
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiJ9.aXdnLmlpdGtncEBnbWFpbC5jb20.yZXnW-Ikx5-hfP5NOzlOoGlPoOoejfhSFWJT60Hoj4c
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /edcourse/allportfolio/iit-profile:
+    get:
+      tags:
+        - General
+      summary: get portfolio
+      parameters:
+        - name: jToken
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiJ9.aXdnLmlpdGtncEBnbWFpbC5jb20.yZXnW-Ikx5-hfP5NOzlOoGlPoOoejfhSFWJT60Hoj4c
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /edcourse/getmodule/iit-profile/1:
+    get:
+      tags:
+        - General
+      summary: get module
+      parameters:
+        - name: jToken
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiJ9.aXdnLmlpdGtncEBnbWFpbC5jb20.yZXnW-Ikx5-hfP5NOzlOoGlPoOoejfhSFWJT60Hoj4c
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /edcourse/allportfolio/sde-profile:
+    delete:
+      tags:
+        - General
+      summary: delete Portfolio
+      parameters:
+        - name: jToken
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiJ9.aXdnLmlpdGtncEBnbWFpbC5jb20.yZXnW-Ikx5-hfP5NOzlOoGlPoOoejfhSFWJT60Hoj4c
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /edcourse/getmodule/sde-profile/1:
+    put:
+      tags:
+        - General
+      summary: delete Module
+      requestBody:
+        content: {}
+      parameters:
+        - name: jToken
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiJ9.aXdnLmlpdGtncEBnbWFpbC5jb20.yZXnW-Ikx5-hfP5NOzlOoGlPoOoejfhSFWJT60Hoj4c
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
