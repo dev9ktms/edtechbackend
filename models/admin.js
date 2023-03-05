@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const adminSchema = mongoose.Schema({
   useremail: { type: String, required: true, unique: true },
+  adminName: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   secretKey: { type: String },
   adminToken: { type: String, default: "" },
