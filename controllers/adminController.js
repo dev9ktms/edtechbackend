@@ -4,7 +4,7 @@ const jwtsecret = "xyz123";
 const nodemailer = require("nodemailer");
 
 const createAdminController = async (req, res) => {
-    const { useremail, adminName, password, secretKey } = req.body;
+    const { useremail, adminname, password, secretKey } = req.body;
     if (secretKey !== "secret") return res.status(400).json({ success: false, error: "Incorrect Secret Key" });
     try {
         let admin = await Admin.findOne({ useremail });
@@ -15,7 +15,7 @@ const createAdminController = async (req, res) => {
         }
         admin = await Admin.create({
             useremail: req.body.useremail,
-            adminName: req.body.adminName,
+            adminname: req.body.adminname,
             password: req.body.password,
         });
 
