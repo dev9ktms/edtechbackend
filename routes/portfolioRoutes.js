@@ -14,30 +14,34 @@ const {
   getmodule,
   deletemodule,
   addVideo,
+  addPdf
 } = require("../controllers/portfolioController");
 
 // ROUTE 1: Create Portfolio : POST
 router.post("/createportfolio", fetchadmin, createPortfolio);
 
-// ROUTE 1: Fetch All Portfolio : GET
+// ROUTE 2: Fetch All Portfolio : GET
 router.get("/allportfolio", allportfolio);
 
-// ROUTE 1: Fetch Specific Portfolio Using Slug : GET
+// ROUTE 3: Fetch Specific Portfolio Using Slug : GET
 router.get("/allportfolio/:portfolioSlug", getportfolio);
 
-// ROUTE 1: Delete Specific Portfolio Using Slug : DELETE
+// ROUTE 4: Delete Specific Portfolio Using Slug : DELETE
 router.delete("/allportfolio/:portfolioSlug", deletePortfolio);
 
-// ROUTE 1: Create a Module for Specific Portfolio Using Slug : POST
+// ROUTE 5: Create a Module for Specific Portfolio Using Slug : POST
 router.post("/addmodule/:portfolioSlug", fetchadmin, addmodule);
 
-// ROUTE 1: Get a Module for Specific Portfolio Using SLug : GET
+// ROUTE 6: Get a Module for Specific Portfolio Using SLug : GET
 router.get("/getmodule/:portfolioSlug/:moduleNumber", getmodule);
 
-// ROUTE 1: DELET a Module for Specific Portfolio Using SLug : PUT
+// ROUTE 7: DELET a Module for Specific Portfolio Using SLug : PUT
 router.put("/getmodule/:portfolioSlug/:moduleNumber", deletemodule);
 
-// ROUTE 1: Add a Video to a Module for Specific Portfolio Using SLug and Module Number : POST
+// ROUTE 8: Add a Video to a Module for Specific Portfolio Using SLug and Module Number : POST
 router.post("/addvideo/:portfolioSlug/:moduleNumber", fetchadmin, formidable(), addVideo);
+
+// ROUTE 9: Add a PDF to a Module for Specific Portfolio Using SLug and Module Number : POST
+router.post("/addpdf/:portfolioSlug/:moduleNumber", fetchadmin, formidable(), addPdf);
 
 module.exports = router;

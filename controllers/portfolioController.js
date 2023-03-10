@@ -153,7 +153,7 @@ const addVideo = async (req, res) => {
     // console.log(videoNumber);
     // video params
     const params = {
-      Bucket: "ktms-edtech-dev",
+      Bucket: "ktms-edtech-dev/videos",
       Key: `${nanoid()}.${video.type.split("/")[1]}`,
       Body: readFileSync(video.path),
       ACL: "public-read",
@@ -195,6 +195,70 @@ const addVideo = async (req, res) => {
   }
 };
 
+// Add Pdf
+const addPdf = async (req, res) => {
+  const { pdf } = req.files;
+  if (pdf.type !== "application/pdf") return res.status(400).send("Not Supported Pdf format");
+
+  const pdfName = pdf.name;
+  const pdfSlug = slugify(pdfName, "_");
+
+  const useremail = req.useremail;
+  try {
+    const portfolioSlug = req.params.portfolioSlug;
+    const i = req.params.moduleNumber;
+
+    const portfolio = await Portfolio.findOne({ portfolioSlug });
+    if (!portfolio) {
+      return res.status(400).send("Portfolio Not Found");
+    }
+    if (useremail != portfolio.portfolioCreator) {
+      return res.status(400).send("Unauthorized");
+    }
+
+    // video params
+    const params = {
+      Bucket: "ktms-edtech-dev/pdf",
+      Key: `${nanoid()}.${pdf.type.split("/")[1]}`,
+      Body: readFileSync(pdf.path),
+      ACL: "public-read",
+      ContentType: pdf.type,
+    };
+
+    // upload to s3
+    S3.upload(params, async (err, data) => {
+      if (err) {
+        console.log(err);
+        return res.status(400).json({ message: 'Not ok' });
+      }
+
+      const NEW_DOC = {
+        pdfName,
+        pdfSlug,
+        pdfLink: data.Location
+      };
+    
+      const result = await Portfolio.findOneAndUpdate(
+        {
+          portfolioSlug,
+          modules: {
+            $elemMatch: {
+              moduleNumber: i,
+            },
+          },
+        },
+        {
+          $push: { "modules.$.pdf": NEW_DOC },
+        }
+      );
+      return res.status(200).json(result);
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send({ err });
+  }
+};
+
 module.exports = {
   createPortfolio,
   allportfolio,
@@ -204,4 +268,5 @@ module.exports = {
   getmodule,
   deletemodule,
   addVideo,
+  addPdf
 };

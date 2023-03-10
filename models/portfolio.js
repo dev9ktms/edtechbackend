@@ -2,6 +2,20 @@ const mongoose = require("mongoose");
 
 const { ObjectId } = mongoose.Schema;
 
+const pdfSchema = new mongoose.Schema(
+  {
+    pdfName: {
+      type: String,
+    },
+    // pdfNumber: { type: Number },
+    pdfSlug: {
+      type: String,
+      lowercase: true,
+    },
+    pdfLink: { type: String }
+  },
+  { timestamps: true }
+);
 const videoSchema = new mongoose.Schema(
   {
     videoTitle: {
@@ -27,6 +41,7 @@ const moduleSchema = new mongoose.Schema(
     moduleDescription: { type: String },
 
     videos: [videoSchema],
+    pdf: [pdfSchema],
   },
   { timestamps: true }
 );
