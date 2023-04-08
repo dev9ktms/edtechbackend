@@ -15,6 +15,7 @@ const awsConfig = {
 const S3 = new AWS.S3(awsConfig);
 
 const uploadhomeVideo = async (req, res) => {
+    const useremail = req.useremail;
 
     const  {video}  = req.files;
     // console.log(video);
@@ -40,7 +41,8 @@ const uploadhomeVideo = async (req, res) => {
             const result = await new HomeVideo({
                 videoTitle,
                 videoSlug,
-                videoLink: data.Location
+                videoLink: data.Location,
+                videoCreator:useremail
             }).save();
             // console.log(result)
             return res.status(200).json(result);
@@ -56,7 +58,16 @@ const gethomeVideo = async (req, res) => {
     res.json(all);
  }
 
+const deleteVideo = async (req, res) => {
+    const videoSlug = req.params.videoSlug;
+    const video = await HomeVideo.findOne({ videoSlug });
+    if (!video) { return res.status(400).send("Video Not Found"); }
+    const result = await HomeVideo.findOneAndDelete({ videoSlug });
+    res.json({ success: true });
+}
+
 module.exports = {
     uploadhomeVideo,
-    gethomeVideo
+    gethomeVideo,
+    deleteVideo
 };

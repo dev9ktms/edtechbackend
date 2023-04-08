@@ -12,7 +12,8 @@ const homeVideoSchema = new mongoose.Schema(
             type: String,
             lowercase: true,
         },
-        videoLink: { type: String }
+        videoLink: { type: String },
+        videoCreator: { type: String },
     },
     { timestamps: true }
 );
